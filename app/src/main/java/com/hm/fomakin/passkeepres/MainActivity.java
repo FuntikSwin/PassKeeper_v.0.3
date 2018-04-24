@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
         updateCards();
 
-        String tmp = "";
+        String tmp = "1234";
     }
 
     private void updateCards() {
