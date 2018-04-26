@@ -26,13 +26,13 @@ public class CardModifyActivity extends AppCompatActivity {
 
         //String[] data = {"Program", "WebSite"};
         //ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, data);
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, new CardGroup[] {
+        /*ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, new CardGroup[] {
                 new CardGroup(1, "Program"),
                 new CardGroup(2, "WebSite")
         });
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        spinnerCardGroup.setAdapter(adapter);
+        spinnerCardGroup.setAdapter(adapter);*/
         /*for (int i = 0; i <= adapter.getCount(); i++) {
             CardGroup cg = (CardGroup) adapter.getItem(i);
             if (cg.getGroupName().equals("Program")) {

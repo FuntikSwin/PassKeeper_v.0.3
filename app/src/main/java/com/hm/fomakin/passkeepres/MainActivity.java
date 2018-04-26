@@ -15,14 +15,19 @@ import android.widget.ListView;
 
 import com.hm.fomakin.passkeepres.Adapter.CardsAdapter;
 import com.hm.fomakin.passkeepres.Database.DbMockHelper;
+import com.hm.fomakin.passkeepres.Database.IDbHelper;
 import com.hm.fomakin.passkeepres.Model.Card;
 
 import java.io.Serializable;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class MainActivity extends AppCompatActivity {
 
-    private DbMockHelper mDbHelper;
+    //private DbMockHelper mDbHelper;
+    @Inject
+    IDbHelper mDbHelper;
 
     private ListView lvCards;
 
@@ -30,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        App.getDbHelperComponent().inject(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -43,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mDbHelper = new DbMockHelper();
+        //mDbHelper = new DbMockHelper();
 
         lvCards = findViewById(R.id.lvCards);
         lvCards.setOnItemClickListener(new AdapterView.OnItemClickListener() {

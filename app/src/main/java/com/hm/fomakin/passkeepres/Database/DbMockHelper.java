@@ -76,4 +76,9 @@ public class DbMockHelper implements IDbHelper {
     public List<CardGroup> getCardGroups() {
         return cardGroups;
     }
+
+    @Override
+    public List<CardField> getCardFields(Card card) {
+        return null;
+    }
 }
