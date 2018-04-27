@@ -25,7 +25,9 @@
             android:label="CardInfo"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".CardModifyActivity">
+        <activity android:name=".CardModifyActivity"
+            android:label="CardModify"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="com.hm.fomakin.passkeepers.editcard"/>
                 <action android:name="com.hm.fomakin.passkeepers.addcard"/>

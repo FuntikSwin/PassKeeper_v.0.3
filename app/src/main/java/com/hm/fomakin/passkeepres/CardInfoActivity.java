@@ -13,7 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.hm.fomakin.passkeepres.Adapter.CardFieldsAdapter;
+import com.hm.fomakin.passkeepres.Adapter.CardInfoFieldsAdapter;
 import com.hm.fomakin.passkeepres.Model.Card;
 
 public class CardInfoActivity extends AppCompatActivity {
@@ -43,8 +43,8 @@ public class CardInfoActivity extends AppCompatActivity {
                         ? mCard.getCardGroup().getGroupName()
                         : "");
 
-        ListView lvCardFields = findViewById(R.id.lvCardFields);
-        CardFieldsAdapter adapter = new CardFieldsAdapter(this, mCard.getCardFields());
+        ListView lvCardFields = findViewById(R.id.lvCardInfoFields);
+        CardInfoFieldsAdapter adapter = new CardInfoFieldsAdapter(this, mCard.getCardFields());
         lvCardFields.setAdapter(adapter);
 
         lvCardFields.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -81,6 +81,7 @@ public class CardInfoActivity extends AppCompatActivity {
         int itemId = item.getItemId();
         if (itemId == R.id.action_edit_card) {
             Intent intent = new Intent(CardInfoActivity.this, CardModifyActivity.class);
+            intent.putExtra("Card", mCard);
             startActivityForResult(intent, 1);
         }
 

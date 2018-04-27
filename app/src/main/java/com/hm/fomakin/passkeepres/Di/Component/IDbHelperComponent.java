@@ -10,12 +10,12 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 
-//@Component(modules = {AppModule.class, DbMockHelperModule.class})
-@Component(modules = {AppModule.class, DbSQLiteHelperModule.class})
+@Component(modules = {AppModule.class, DbMockHelperModule.class})
+//@Component(modules = {AppModule.class, DbSQLiteHelperModule.class})
 @Singleton
 public interface IDbHelperComponent {
 
     void inject(MainActivity mainActivity);
-    //void inject(CardModifyActivity cardModifyActivity);
+    void inject(CardModifyActivity cardModifyActivity);
 
 }

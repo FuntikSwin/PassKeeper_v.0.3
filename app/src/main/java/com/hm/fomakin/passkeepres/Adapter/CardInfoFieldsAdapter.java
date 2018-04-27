@@ -5,38 +5,20 @@ import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.hm.fomakin.passkeepres.Extra.FieldValueViewBuilder;
 import com.hm.fomakin.passkeepres.Model.CardField;
 import com.hm.fomakin.passkeepres.R;
 
 import java.util.List;
 
-public class CardFieldsAdapter extends BaseAdapter {
+public class CardInfoFieldsAdapter extends BaseAdapter {
 
     private Context mContext;
     private List<CardField> mCardFields;
 
-    public CardFieldsAdapter(Context mContext, List<CardField> mCardFields) {
+    public CardInfoFieldsAdapter(Context mContext, List<CardField> mCardFields) {
         this.mContext = mContext;
-        this.mCardFields = mCardFields;
-    }
-
-    public Context getmContext() {
-        return mContext;
-    }
-
-    public void setmContext(Context mContext) {
-        this.mContext = mContext;
-    }
-
-    public List<CardField> getmCardFields() {
-        return mCardFields;
-    }
-
-    public void setmCardFields(List<CardField> mCardFields) {
         this.mCardFields = mCardFields;
     }
 
@@ -57,7 +39,7 @@ public class CardFieldsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = View.inflate(mContext, R.layout.card_field_listview_item, null);
+        View view = View.inflate(mContext, R.layout.cardinfo_field_listview_item, null);
 
         CardField cardField = mCardFields != null ? mCardFields.get(position) : null;
 

@@ -23,7 +23,7 @@ public class DbMockHelper implements IDbHelper {
 
     private void doPrepareCardGroups() {
         cardGroups = new ArrayList<>();
-        cardGroups.add(new CardGroup(1, ""));
+        cardGroups.add(new CardGroup(1, " "));
         cardGroups.add(new CardGroup(2, "Program"));
         cardGroups.add(new CardGroup(3, "WebSite"));
     }
