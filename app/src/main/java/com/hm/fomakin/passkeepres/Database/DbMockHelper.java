@@ -65,6 +65,11 @@ public class DbMockHelper implements IDbHelper {
         mockCards = new ArrayList<>();
         mockCards.add(new Card(1, "Card1", getCardGroup("Program"), cardFields));
         mockCards.add(new Card(2, "Card2", getCardGroup("WebSite"), cardFields));
+
+        cardFields = new ArrayList<>();
+        cardFields.add(new CardField(1, "Login", "admin", getCardFieldValueType("TextView")));
+        cardFields.add(new CardField(2, "Password", "Ab123456", getCardFieldValueType("Password")));
+
         mockCards.add(new Card(3, "Card3", getCardGroup(""), cardFields));
     }
 

@@ -84,7 +84,7 @@ public class CardModifyActivity extends AppCompatActivity {
 
         for (int i = 0; i < adapterSpinner.getCount(); i++) {
             String spinnerItem = adapterSpinner.getItem(i);
-            if (mCard.getCardGroup().getGroupName().trim().length() == 0
+            if ((mCard.getCardGroup() == null || mCard.getCardGroup().getGroupName().trim().length() == 0)
                     && spinnerItem.equals(emptyCardGroupCaption)) {
                 spinnerCardGroup.setSelection(i);
                 break;

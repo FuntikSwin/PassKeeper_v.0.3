@@ -20,13 +20,17 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
-
+    
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:hint="Card Caption"
-        android:id="@+id/etCardCaption"/>
+        android:id="@+id/etCardCaption">
+
+        <requestFocus/>
+
+    </EditText>
 
     <Spinner
         android:layout_width="wrap_content"
