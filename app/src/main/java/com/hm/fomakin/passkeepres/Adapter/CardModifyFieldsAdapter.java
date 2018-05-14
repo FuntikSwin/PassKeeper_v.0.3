@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
 
@@ -54,6 +55,15 @@ public class CardModifyFieldsAdapter extends BaseAdapter {
 
             EditText etFieldValue = view.findViewById(R.id.etFieldValue);
             etFieldValue.setText(cardField.getValue());
+
+            ImageButton btnDeleteField = view.findViewById(R.id.btnDeleteField);
+            btnDeleteField.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            });
 
             /*Button btnChangeCaption = view.findViewById(R.id.btnChangeFieldCaption);
             btnChangeCaption.setOnClickListener(new View.OnClickListener() {
