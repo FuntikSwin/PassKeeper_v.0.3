@@ -55,7 +55,7 @@ public class CardModifyFieldsAdapter extends BaseAdapter {
             EditText etFieldValue = view.findViewById(R.id.etFieldValue);
             etFieldValue.setText(cardField.getValue());
 
-            Button btnChangeCaption = view.findViewById(R.id.btnChangeFieldCaption);
+            /*Button btnChangeCaption = view.findViewById(R.id.btnChangeFieldCaption);
             btnChangeCaption.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -89,7 +89,7 @@ public class CardModifyFieldsAdapter extends BaseAdapter {
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 }
-            });
+            });*/
         }
 
         return view;

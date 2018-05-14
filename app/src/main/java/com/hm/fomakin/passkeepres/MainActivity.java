@@ -45,10 +45,10 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
-                Intent intent = new Intent(MainActivity.this, TestActivity.class);
-                startActivityForResult(intent, 1);
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                /*Intent intent = new Intent(MainActivity.this, TestActivity.class);
+                startActivityForResult(intent, 1);*/
             }
         });
 
@@ -94,6 +94,9 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_test) {
+            Intent intent = new Intent(MainActivity.this, TestActivity.class);
+            startActivityForResult(intent, 1);
         }
 
         return super.onOptionsItemSelected(item);
