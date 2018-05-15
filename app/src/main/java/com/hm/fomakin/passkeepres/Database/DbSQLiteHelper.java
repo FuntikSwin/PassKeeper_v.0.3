@@ -137,6 +137,11 @@ public class DbSQLiteHelper extends SQLiteOpenHelper implements IDbHelper {
     }
 
     @Override
+    public void removeCard(Card card) {
+
+    }
+
+    @Override
     public List<CardGroup> getCardGroups() {
         List<CardGroup> groups = new ArrayList<>();
 

@@ -78,6 +78,11 @@ public class DbMockHelper implements IDbHelper {
         return cards;
     }
 
+    @Override
+    public void removeCard(Card card) {
+        mockCards.remove(card);
+    }
+
     public List<CardGroup> getCardGroups() {
         return cardGroups;
     }

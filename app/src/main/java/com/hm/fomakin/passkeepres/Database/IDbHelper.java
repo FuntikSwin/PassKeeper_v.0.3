@@ -9,6 +9,7 @@ import java.util.List;
 public interface IDbHelper {
 
     List<Card> getCards();
+    void removeCard(Card card);
     List<CardGroup> getCardGroups();
     List<CardField> getCardFields(Card card);
 

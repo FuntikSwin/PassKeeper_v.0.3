@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     IDbHelper mDbHelper;
 
     private ListView lvCards;
+    private List<Card> cards;
+    private CardsAdapter cardsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,15 +69,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /*lvCards.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Card card = (Card) parent.getItemAtPosition(position);
+                Snackbar.make(view, "Card caption: " + card.getCaption(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                return true;
+            }
+        });*/
+
+        registerForContextMenu(lvCards);
+
         updateCards();
 
         String tmp = "1234";
     }
 
     private void updateCards() {
-        List<Card> cards = mDbHelper.getCards();
-        CardsAdapter adapter = new CardsAdapter(this, cards);
-        lvCards.setAdapter(adapter);
+        cards = mDbHelper.getCards();
+        if (cardsAdapter == null) {
+            cardsAdapter = new CardsAdapter(this, cards);
+            lvCards.setAdapter(cardsAdapter);
+            return;
+        }
+        cardsAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -100,5 +118,27 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        if (v.getId() == R.id.lvCards) {
+            ListView lv = (ListView) v;
+            Card cardItem = (Card) lv.getItemAtPosition(((AdapterView.AdapterContextMenuInfo) menuInfo).position);
+
+            menu.add("Удалить");
+            MenuItem mi = menu.getItem(0);
+            mi.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                    Card currCard = (Card) cardsAdapter.getItem(info.position);
+                    mDbHelper.removeCard(currCard);
+                    updateCards();
+
+                    return true;
+                }
+            });
+        }
     }
 }
