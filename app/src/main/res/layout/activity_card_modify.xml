@@ -38,6 +38,17 @@
         android:layout_below="@id/etCardCaption"
         android:id="@+id/spinnerCardGroup" />
 
-    <include layout="@layout/content_cardmodify_fileds" />
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/lvCardModifyFields"
+        android:layout_weight="1">
+    </ListView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add field"
+        android:id="@+id/btnAddField"/>
 
 </LinearLayout>

@@ -1,22 +1,26 @@
 package com.hm.fomakin.passkeepres;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.PopupMenu;
+import android.widget.QuickContactBadge;
 import android.widget.Spinner;
 
 import com.hm.fomakin.passkeepres.Adapter.CardModifyFieldsAdapter;
 import com.hm.fomakin.passkeepres.Database.IDbHelper;
 import com.hm.fomakin.passkeepres.Model.Card;
+import com.hm.fomakin.passkeepres.Model.CardField;
+import com.hm.fomakin.passkeepres.Model.CardFieldValueType;
 import com.hm.fomakin.passkeepres.Model.CardGroup;
 
 import java.util.ArrayList;
@@ -37,6 +41,8 @@ public class CardModifyActivity extends AppCompatActivity {
     private Spinner spinnerCardGroup;
     private ArrayAdapter<String> adapterSpinner;
     private ListView lvFields;
+    private CardModifyFieldsAdapter adapterModifyFields;
+    private List<CardGroup> dbCardGroups;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +61,10 @@ public class CardModifyActivity extends AppCompatActivity {
         spinnerCardGroup = findViewById(R.id.spinnerCardGroup);
         etCardCaption = findViewById(R.id.etCardCaption);
 
-        List<CardGroup> cardGroups = dbHelper.getCardGroups();
+        dbCardGroups = dbHelper.getCardGroups();
         List<String> dataSpinner = new ArrayList<>();
-        for (int i = 0; i < cardGroups.size(); i++) {
-            String groupName = cardGroups.get(i).getGroupName();
+        for (int i = 0; i < dbCardGroups.size(); i++) {
+            String groupName = dbCardGroups.get(i).getGroupName();
             if (groupName.trim().length() == 0) {
                 groupName = emptyCardGroupCaption;
             }
@@ -73,8 +79,43 @@ public class CardModifyActivity extends AppCompatActivity {
         spinnerCardGroup.setAdapter(adapterSpinner);
 
         lvFields = findViewById(R.id.lvCardModifyFields);
-        CardModifyFieldsAdapter adapter = new CardModifyFieldsAdapter(this, mCard.getCardFields());
-        lvFields.setAdapter(adapter);
+        adapterModifyFields = new CardModifyFieldsAdapter(this, mCard.getCardFields());
+        lvFields.setAdapter(adapterModifyFields);
+
+        Button btnAddField = findViewById(R.id.btnAddField);
+        btnAddField.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(CardModifyActivity.this, view);
+                Menu menu = popupMenu.getMenu();
+
+                List<CardFieldValueType> valueTypes = dbHelper.getCardFieldValueTypes();
+                for (CardFieldValueType vType : valueTypes) {
+                    menu.add(vType.getTypeName());
+                }
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        CardField field = null;
+                        for (CardFieldValueType vType : valueTypes) {
+                            if (vType.getTypeName().equals(menuItem.getTitle().toString())) {
+                                field = new CardField(0, "FieldCaption", "", vType);
+                                break;
+                            }
+                        }
+                        if (field == null) {
+                            return false;
+                        }
+
+                        return true;
+                    }
+                });
+
+                popupMenu.show();
+            }
+        });
+        //registerForContextMenu(btnAddField);
 
         prepareModifyData();
     }
@@ -103,6 +144,20 @@ public class CardModifyActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    private void updateCard() {
+        mCard.setCaption(etCardCaption.getText().toString());
+        String groupName = (String) spinnerCardGroup.getSelectedItem();
+        for (CardGroup cg : dbCardGroups) {
+            if (cg.getGroupName().equals(groupName)) {
+                mCard.setCardGroup(cg);
+                break;
+            }
+        }
+        mCard.setCardFields(adapterModifyFields.getCurrCardFields());
+
+        dbHelper.updateCard(mCard);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent = new Intent(CardModifyActivity.this, CardInfoActivity.class);
@@ -110,6 +165,7 @@ public class CardModifyActivity extends AppCompatActivity {
         int itemId = item.getItemId();
         switch (itemId) {
             case R.id.action_save_card:
+                updateCard();
                 intent.putExtra("Card", mCard);
                 startActivityForResult(intent, 1);
                 break;
@@ -121,4 +177,11 @@ public class CardModifyActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    /*@Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        if (v.getId() == R.id.btnAddField) {
+            menu.add("test");
+        }
+    }*/
 }

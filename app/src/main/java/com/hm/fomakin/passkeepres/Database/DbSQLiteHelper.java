@@ -182,6 +182,16 @@ public class DbSQLiteHelper extends SQLiteOpenHelper implements IDbHelper {
     }
 
     @Override
+    public void updateCard(Card card) {
+
+    }
+
+    @Override
+    public List<CardFieldValueType> getCardFieldValueTypes() {
+        return null;
+    }
+
+    @Override
     public void onCreate(SQLiteDatabase db) {
 
     }

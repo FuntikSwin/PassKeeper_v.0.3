@@ -29,6 +29,15 @@ public class CardModifyFieldsAdapter extends BaseAdapter {
         this.mCardFields = mCardFields;
     }
 
+    private void removeCardField(CardField cardField) {
+        mCardFields.remove(cardField);
+        this.notifyDataSetChanged();
+    }
+
+    public List<CardField> getCurrCardFields() {
+        return mCardFields;
+    }
+
     @Override
     public int getCount() {
         return mCardFields != null ? mCardFields.size() : 0;
@@ -60,8 +69,9 @@ public class CardModifyFieldsAdapter extends BaseAdapter {
             btnDeleteField.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    /*Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();*/
+                    removeCardField(cardField);
                 }
             });
 
