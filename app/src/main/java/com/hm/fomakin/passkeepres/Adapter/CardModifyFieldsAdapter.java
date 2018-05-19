@@ -38,6 +38,8 @@ public class CardModifyFieldsAdapter extends BaseAdapter {
         return mCardFields;
     }
 
+
+
     @Override
     public int getCount() {
         return mCardFields != null ? mCardFields.size() : 0;

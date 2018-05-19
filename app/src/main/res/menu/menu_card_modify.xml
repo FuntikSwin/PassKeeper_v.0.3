@@ -14,4 +14,9 @@
         android:title="Cancel"
         app:showAsAction="ifRoom"/>
 
+    <item android:id="@+id/action_test"
+        android:orderInCategory="1000"
+        android:title="Test"
+        app:showAsAction="ifRoom" />
+
 </menu>

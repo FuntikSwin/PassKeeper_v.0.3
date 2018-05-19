@@ -1,10 +1,13 @@
 package com.hm.fomakin.passkeepres;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +18,7 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.QuickContactBadge;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.hm.fomakin.passkeepres.Adapter.CardModifyFieldsAdapter;
 import com.hm.fomakin.passkeepres.Database.IDbHelper;
@@ -97,15 +101,37 @@ public class CardModifyActivity extends AppCompatActivity {
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        CardField field = null;
+                        CardFieldValueType currFieldType = null;
                         for (CardFieldValueType vType : valueTypes) {
                             if (vType.getTypeName().equals(menuItem.getTitle().toString())) {
-                                field = new CardField(0, "FieldCaption", "", vType);
+                                currFieldType = vType;
                                 break;
                             }
                         }
-                        if (field == null) {
-                            return false;
+                        if (currFieldType != null) {
+
+                            LayoutInflater layoutInflater = LayoutInflater.from(CardModifyActivity.this);
+                            final View dlgView = layoutInflater.inflate(R.layout.dialog_add_card_field, null);
+
+                            final EditText etFieldCaption = dlgView.findViewById(R.id.etFieldCaption);
+                            final CardFieldValueType finalFieldType = currFieldType;
+                            AlertDialog dialog = new AlertDialog.Builder(CardModifyActivity.this)
+                                    .setTitle("Add " + finalFieldType.getTypeName() +  " field")
+                                    .setView(dlgView)
+                                    .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            addCardField(finalFieldType, etFieldCaption.getText().toString());
+                                        }
+                                    })
+                                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            return;
+                                        }
+                                    })
+                                    .create();
+                            dialog.show();
                         }
 
                         return true;
@@ -115,9 +141,14 @@ public class CardModifyActivity extends AppCompatActivity {
                 popupMenu.show();
             }
         });
-        //registerForContextMenu(btnAddField);
 
         prepareModifyData();
+    }
+
+    private void addCardField(CardFieldValueType cardFieldValueType, String fieldCaption) {
+        CardField cardField = new CardField(0, fieldCaption, "", cardFieldValueType);
+        mCard.getCardFields().add(cardField);
+        adapterModifyFields.notifyDataSetChanged();
     }
 
     private void prepareModifyData() {
@@ -153,9 +184,30 @@ public class CardModifyActivity extends AppCompatActivity {
                 break;
             }
         }
-        mCard.setCardFields(adapterModifyFields.getCurrCardFields());
+
+        List<CardField> cardFields = new ArrayList<>();
+        for (int i = 0; i < lvFields.getChildCount(); i++) {
+            EditText etFieldValue = lvFields.getChildAt(i).findViewById(R.id.etFieldValue);
+            CardField cf = (CardField) adapterModifyFields.getItem(i);
+            cf.setValue(etFieldValue.getText().toString());
+            cardFields.add(cf);
+        }
+        mCard.setCardFields(cardFields);
 
         dbHelper.updateCard(mCard);
+    }
+
+    private void test() {
+        for (int i = 0; i < lvFields.getChildCount(); i++) {
+            View itemView = lvFields.getChildAt(i);
+            EditText etItemValue = itemView.findViewById(R.id.etFieldValue);
+            String itemValueStr = etItemValue.getText().toString();
+            TextView tvItemCaption = itemView.findViewById(R.id.tvFieldCaption);
+            String itemCaptionStr = tvItemCaption.getText().toString();
+
+            CardField cf = (CardField) adapterModifyFields.getItem(i);
+            int tmp = 0;
+        }
     }
 
     @Override
@@ -170,18 +222,13 @@ public class CardModifyActivity extends AppCompatActivity {
                 startActivityForResult(intent, 1);
                 break;
             case R.id.action_cancel:
-                intent.putExtra("Card", mCard);
-                startActivityForResult(intent, 1);
+                finish();
+                break;
+            case R.id.action_test:
+                test();
                 break;
         }
 
         return super.onOptionsItemSelected(item);
     }
-
-    /*@Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        if (v.getId() == R.id.btnAddField) {
-            menu.add("test");
-        }
-    }*/
 }
