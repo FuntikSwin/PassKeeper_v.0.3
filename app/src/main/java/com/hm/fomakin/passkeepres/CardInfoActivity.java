@@ -80,7 +80,8 @@ public class CardInfoActivity extends AppCompatActivity {
         }*/
         int itemId = item.getItemId();
         if (itemId == R.id.action_edit_card) {
-            Intent intent = new Intent(CardInfoActivity.this, CardModifyActivity.class);
+            //Intent intent = new Intent(CardInfoActivity.this, CardModifyActivity.class);
+            Intent intent = new Intent("com.hm.fomakin.passkeepers.editcard");
             intent.putExtra("Card", mCard);
             startActivityForResult(intent, 1);
         }

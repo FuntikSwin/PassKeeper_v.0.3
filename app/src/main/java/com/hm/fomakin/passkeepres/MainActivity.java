@@ -20,6 +20,7 @@ import com.hm.fomakin.passkeepres.Database.IDbHelper;
 import com.hm.fomakin.passkeepres.Model.Card;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -48,10 +49,13 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                /*Intent intent = new Intent(MainActivity.this, TestActivity.class);
-                startActivityForResult(intent, 1);*/
+                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
+
+                Card newCard = new Card(0, "", mDbHelper.getCardGroups().get(0), new ArrayList<>());
+                Intent intent = new Intent("com.hm.fomakin.passkeepers.addcard");
+                intent.putExtra("Card", newCard);
+                startActivity(intent);
             }
         });
 
@@ -65,18 +69,9 @@ public class MainActivity extends AppCompatActivity {
                 //Snackbar.make(view, "Card caption: " + card.getCaption(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 Intent intent = new Intent(MainActivity.this, CardInfoActivity.class);
                 intent.putExtra("Card", card);
-                startActivityForResult(intent, 1);
+                startActivity(intent);
             }
         });
-
-        /*lvCards.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Card card = (Card) parent.getItemAtPosition(position);
-                Snackbar.make(view, "Card caption: " + card.getCaption(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                return true;
-            }
-        });*/
 
         registerForContextMenu(lvCards);
 

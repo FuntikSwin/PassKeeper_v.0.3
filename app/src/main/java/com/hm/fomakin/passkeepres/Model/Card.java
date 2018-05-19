@@ -10,6 +10,9 @@ public class Card implements Serializable {
     private CardGroup cardGroup;
     private List<CardField> cardFields;
 
+    public Card() {
+    }
+
     public Card(int id, String caption, CardGroup cardType, List<CardField> cardFields) {
         this.id = id;
         this.caption = caption;

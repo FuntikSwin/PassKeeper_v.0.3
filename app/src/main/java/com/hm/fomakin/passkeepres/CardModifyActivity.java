@@ -34,7 +34,7 @@ import javax.inject.Inject;
 
 public class CardModifyActivity extends AppCompatActivity {
 
-    private String intentAction;
+    private boolean isAddNewCard;
     private Card mCard;
     private static final String emptyCardGroupCaption = "Без группы";
 
@@ -55,7 +55,12 @@ public class CardModifyActivity extends AppCompatActivity {
         App.getDbHelperComponent().inject(this);
 
         Intent intent = getIntent();
-        intentAction = intent.getAction();
+        String intentAction = intent.getAction();
+        if (intentAction.isEmpty()) {
+            finish();
+            return;
+        }
+        isAddNewCard = intentAction == "com.hm.fomakin.passkeepers.addcard";
 
         mCard = (Card) intent.getSerializableExtra("Card");
 
@@ -116,7 +121,7 @@ public class CardModifyActivity extends AppCompatActivity {
                             final EditText etFieldCaption = dlgView.findViewById(R.id.etFieldCaption);
                             final CardFieldValueType finalFieldType = currFieldType;
                             AlertDialog dialog = new AlertDialog.Builder(CardModifyActivity.this)
-                                    .setTitle("Add " + finalFieldType.getTypeName() +  " field")
+                                    .setTitle("Add " + finalFieldType.getTypeName() + " field")
                                     .setView(dlgView)
                                     .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                                         @Override
@@ -176,10 +181,11 @@ public class CardModifyActivity extends AppCompatActivity {
     }
 
     private void updateCard() {
+        mCard = new Card();
         mCard.setCaption(etCardCaption.getText().toString());
         String groupName = (String) spinnerCardGroup.getSelectedItem();
         for (CardGroup cg : dbCardGroups) {
-            if (cg.getGroupName().equals(groupName)) {
+            if ((groupName.equals(emptyCardGroupCaption) && cg.getGroupName().equals(" ")) || cg.getGroupName().equals(groupName)) {
                 mCard.setCardGroup(cg);
                 break;
             }
@@ -194,41 +200,39 @@ public class CardModifyActivity extends AppCompatActivity {
         }
         mCard.setCardFields(cardFields);
 
-        dbHelper.updateCard(mCard);
-    }
-
-    private void test() {
-        for (int i = 0; i < lvFields.getChildCount(); i++) {
-            View itemView = lvFields.getChildAt(i);
-            EditText etItemValue = itemView.findViewById(R.id.etFieldValue);
-            String itemValueStr = etItemValue.getText().toString();
-            TextView tvItemCaption = itemView.findViewById(R.id.tvFieldCaption);
-            String itemCaptionStr = tvItemCaption.getText().toString();
-
-            CardField cf = (CardField) adapterModifyFields.getItem(i);
-            int tmp = 0;
+        if (isAddNewCard) {
+            dbHelper.addCard(mCard);
+        } else {
+            dbHelper.updateCard(mCard);
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent = new Intent(CardModifyActivity.this, CardInfoActivity.class);
-
         int itemId = item.getItemId();
         switch (itemId) {
             case R.id.action_save_card:
                 updateCard();
-                intent.putExtra("Card", mCard);
-                startActivityForResult(intent, 1);
+                if (!isAddNewCard) {
+                    Intent intent = new Intent(CardModifyActivity.this, CardInfoActivity.class);
+                    intent.putExtra("Card", mCard);
+                    startActivityForResult(intent, 1);
+                    break;
+                }
+                finish();
                 break;
             case R.id.action_cancel:
                 finish();
                 break;
-            case R.id.action_test:
-                test();
-                break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        EditText et = lvFields.getChildAt(0).findViewById(R.id.etFieldValue);
+        String val = et.getText().toString();
+        super.onBackPressed();
     }
 }

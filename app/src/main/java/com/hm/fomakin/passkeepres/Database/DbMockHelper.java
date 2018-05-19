@@ -103,6 +103,16 @@ public class DbMockHelper implements IDbHelper {
     }
 
     @Override
+    public void addCard(Card card) {
+        long cardId = 1;
+        if (mockCards != null && mockCards.size() > 0) {
+            cardId = mockCards.get(mockCards.size() - 1).getId() + 1;
+        }
+        card.setId(cardId);
+        mockCards.add(card);
+    }
+
+    @Override
     public List<CardFieldValueType> getCardFieldValueTypes() {
         return cardFieldValueTypes;
     }

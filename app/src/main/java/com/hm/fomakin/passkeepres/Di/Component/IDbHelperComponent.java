@@ -10,8 +10,8 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 
-@Component(modules = {AppModule.class, DbMockHelperModule.class})
-//@Component(modules = {AppModule.class, DbSQLiteHelperModule.class})
+//@Component(modules = {AppModule.class, DbMockHelperModule.class})
+@Component(modules = {AppModule.class, DbSQLiteHelperModule.class})
 @Singleton
 public interface IDbHelperComponent {
 

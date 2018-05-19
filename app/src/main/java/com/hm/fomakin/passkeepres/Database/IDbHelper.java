@@ -12,6 +12,7 @@ public interface IDbHelper {
     List<Card> getCards();
     void removeCard(Card card);
     void updateCard(Card card);
+    void addCard(Card card);
 
     List<CardGroup> getCardGroups();
 
