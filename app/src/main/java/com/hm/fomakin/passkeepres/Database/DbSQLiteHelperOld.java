@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class DbSQLiteHelper extends SQLiteOpenHelper implements IDbHelper {
+public class DbSQLiteHelperOld extends SQLiteOpenHelper implements IDbHelper {
 
     private final Context context;
 
@@ -32,7 +32,7 @@ public class DbSQLiteHelper extends SQLiteOpenHelper implements IDbHelper {
     private SQLiteDatabase dataBase;
     private boolean needUpdate = false;
 
-    public DbSQLiteHelper(Context context) {
+    public DbSQLiteHelperOld(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
         if (Build.VERSION.SDK_INT >= 17) {
             DB_PATH = context.getApplicationInfo().dataDir + "/databases/";
@@ -43,6 +43,7 @@ public class DbSQLiteHelper extends SQLiteOpenHelper implements IDbHelper {
 
         copyDataBase();
         this.getReadableDatabase();
+        //this.getWritableDatabase();
 
         try {
             updateDataBase();

@@ -59,8 +59,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //mDbHelper = new DbMockHelper();
-
         lvCards = findViewById(R.id.lvCards);
         lvCards.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -78,6 +76,12 @@ public class MainActivity extends AppCompatActivity {
         updateCards();
 
         String tmp = "1234";
+    }
+
+    @Override
+    protected void onResume() {
+        updateCards();
+        super.onResume();
     }
 
     private void updateCards() {
@@ -136,4 +140,6 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     }
+
+
 }
